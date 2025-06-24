@@ -17,6 +17,8 @@ type walletInfo = {
 type mnemonicType = {
   mnemonic?: walletInfo[];
   setMnemonic: (value: walletInfo[]) => void;
+  seedPhrase: string,
+  setSeedPhrase: (value: string)=> void
 };
 
 export const walletLogicContext = createContext<mnemonicType | null>(null);
@@ -27,13 +29,15 @@ export const WalletLogicProvider = ({
   children: React.ReactNode;
 }) => {
   const [mnemonic, setMnemonic] = useState<walletInfo[]>([]);
+  const [seedPhrase, setSeedPhrase] = useState<string>("")
 
   useEffect(() => {
     const generateWallet = async () => {
       try {
-        const seedphrase = generateMnemonic(wordlist);
-        const seeds = mnemonicToSeedSync(seedphrase).toString();
-        for (let i = 0; i < 6; i++) {
+        const seedPhrase = generateMnemonic(wordlist);
+        setSeedPhrase(seedPhrase)
+        const seeds = mnemonicToSeedSync(seedPhrase).toString();
+        for (let i = 0; i < 5; i++) {
 
           const keys = derivePath(`m/44'/501'/${i}'/0'`, seeds);
           const keypair = Keypair.fromSeed(keys.key);
@@ -54,7 +58,7 @@ export const WalletLogicProvider = ({
   }, []);
 
   return (
-    <walletLogicContext.Provider value={{ mnemonic, setMnemonic }}>
+    <walletLogicContext.Provider value={{ mnemonic, setMnemonic, setSeedPhrase , seedPhrase }}>
       {children}
     </walletLogicContext.Provider>
   );
