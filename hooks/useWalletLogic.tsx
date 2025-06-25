@@ -15,7 +15,7 @@ type walletInfo = {
 };
 
 type mnemonicType = {
-  mnemonic?: walletInfo[];
+  mnemonic: walletInfo[];
   setMnemonic: (value: walletInfo[]) => void;
   seedPhrase: string,
   setSeedPhrase: (value: string)=> void
@@ -37,9 +37,12 @@ export const WalletLogicProvider = ({
         const seedPhrase = generateMnemonic(wordlist);
         setSeedPhrase(seedPhrase)
         const seeds = Buffer.from(mnemonicToSeedSync(seedPhrase)); 
+        
+        // Clear previous mnemonic before generating new ones
+        setMnemonic([]);
+        
         for (let i = 0; i < 5; i++) {
-
-          const { key } = derivePath(`m/44'/501'/${i}'/0'`, seeds as unknown as string); // 👈 type-cast fix
+          const { key } = derivePath(`m/44'/501'/${i}'/0'`, seeds as unknown as string);
           const keypair = Keypair.fromSeed(key);
 
           setMnemonic((prev) => [
@@ -51,7 +54,7 @@ export const WalletLogicProvider = ({
           ]);
         }
       } catch (error) {
-        console.log("An error occured");
+        console.log("An error occurred:", error);
       }
     };
     generateWallet();
@@ -64,10 +67,21 @@ export const WalletLogicProvider = ({
   );
 };
 
+// Fixed hook that handles SSR gracefully
 export const walletContext = () => {
   const context = useContext(walletLogicContext);
-  if (!context)
-    throw new Error("Provider must be used inside the provider hook");
+  
+  // Instead of throwing an error, return default values during SSR
+  if (!context) {
+    // This will be the case during server-side rendering
+    return {
+      mnemonic: [],
+      setMnemonic: () => {},
+      seedPhrase: "",
+      setSeedPhrase: () => {}
+    };
+  }
+  
   return context;
 };
 
