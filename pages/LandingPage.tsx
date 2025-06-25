@@ -59,9 +59,12 @@ export default function LandingPage() {
       <div className="w-full px-[20%]  flex content-center items-start flex-col py-6">
         <div className="w-full flex border rounded-xl border-gray-900 bg-white dark:bg-black justify-between items-center flex-row p-2 m-2  px-5">
           <div className="text-2xl py-4 ">
-            <div className="text-2xl font-bold">Yūgen</div>
+          <div className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-neutral-50 to-neutral-400 py-2">
+  Yūgen
+</div>
+
             <div className="text-sm">
-              A mini project taht creates 5 solana wallet from scratch using the BIP39 protocol.
+            Yūgen natively generates hierarchical Deterministic (HD) wallets from mnemonic phrases using the BIP39 protocol. (forming the core logic behind solana wallets like phantom)
             </div>
           </div>
           <div className=" flex flex-row gap-2 text-xl">
@@ -72,7 +75,7 @@ export default function LandingPage() {
         </div>
 
         {seedPhraseArray && (
-          <div className=" w-full my-3 p-2 bg-white dark:bg-black border rounded-xl border-gray-900">
+          <div className=" w-full my-3 p-4 bg-white dark:bg-black border rounded-xl border-gray-900">
             <Accordion type="single" collapsible>
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-xl">
@@ -82,7 +85,7 @@ export default function LandingPage() {
                   <div className=" flex flex-row justify-between px-2">
                     <div>
                       Refers to a human-readable set of words (typically 12 or
-                      24){" "}
+                      24){" "} that represent your secret key.
                     </div>
                     <div className="flex flex-row gap-4 text-xl">
                       <button onClick={() => copytext(seedPhrase)}>
@@ -126,7 +129,7 @@ export default function LandingPage() {
           mnemonic.map((item, index) => (
             <div
               key={index + 1}
-              className="border rounded-xl border-gray-900 w-full my-3 p-2 dark:bg-black bg-white"
+              className="border rounded-xl border-gray-900 w-full my-3 p-2 dark:bg-black bg-white p-4"
             >
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
@@ -134,7 +137,7 @@ export default function LandingPage() {
                     Wallet {index + 1}
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="text-xl flex justify-end w-full">
+                    <div className="text-xl flex justify-end w-full ">
                       <button onClick={() => setShowSecret(!showSecret)}>
                         {showSecret ? (
                           <FaEye className="cursor-pointer" />
@@ -159,7 +162,7 @@ export default function LandingPage() {
                     </div>
                     <div className="font-mono break-words">
                       <div className="text-md px-2">Secret key-</div>
-                      <div className="relative rounded-2xl border md:rounded-3xl md:p-3 m-3 border-gray-900 w-full text-xl flex justify-center items-center  cursor-pointer">
+                      <div className="relative rounded-2xl border md:rounded-3xl md:p-3 m-3 border-gray-900  text-xl flex justify-center items-center  cursor-pointer">
                         {showSecret ? (
                           <div
                             className=" text-sm break-words whitespace-normal text-center w-full px-2"
