@@ -36,11 +36,11 @@ export const WalletLogicProvider = ({
       try {
         const seedPhrase = generateMnemonic(wordlist);
         setSeedPhrase(seedPhrase)
-        const seeds = mnemonicToSeedSync(seedPhrase).toString();
+        const seeds = Buffer.from(mnemonicToSeedSync(seedPhrase)); 
         for (let i = 0; i < 5; i++) {
 
-          const keys = derivePath(`m/44'/501'/${i}'/0'`, seeds);
-          const keypair = Keypair.fromSeed(keys.key);
+          const { key } = derivePath(`m/44'/501'/${i}'/0'`, seeds as unknown as string); // 👈 type-cast fix
+          const keypair = Keypair.fromSeed(key);
 
           setMnemonic((prev) => [
             ...prev,
